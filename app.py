@@ -5,6 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import precision_score, recall_score
+from sklearn.svm import SVC
 
 #to load the mushroom dataset
 @st.cache(persist=True)
@@ -41,6 +42,21 @@ def main():
         if st.sidebar.button("Classify"):
             st.subheader("Logistic Regression Results")
             model = LogisticRegression(C=C,max_iter=max_iter)
+            model.fit(X_train,y_train)
+            accuracy = model.score(X_test,y_test)
+            y_predicted = model.predict(X_test)
+            st.write("Accuracy: ", accuracy.round(2))
+            st.write("Precision: ", precision_score(y_test,y_predicted,classes))
+            st.write("Recall: ", recall_score(y_test,y_predicted,classes))
+    
+    if classifier == "Support Vector Classifier(SVC)":
+        st.sidebar.write("Choose Hyperparameters for your model")
+        C = st.sidebar.number_input("Inverse of Regularization Strength C",0.0,10.0,1.0,0.1)
+        kernel = st.sidebar.selectbox("Kernel Type",("rbf","linear","poly","sigmoid"))
+        gamma = st.sidebar.selectbox("Kernal coefficient gamma",("scale","auto"))
+        if st.sidebar.button("Classify"):
+            st.subheader("Support Vector Classifier Results")
+            model = SVC(C=C,kernel=kernel,gamma=gamma)
             model.fit(X_train,y_train)
             accuracy = model.score(X_test,y_test)
             y_predicted = model.predict(X_test)
