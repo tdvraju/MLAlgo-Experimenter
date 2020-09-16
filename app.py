@@ -6,6 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import precision_score, recall_score
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 #to load the mushroom dataset
 @st.cache(persist=True)
@@ -33,7 +34,7 @@ def main():
     classes = ["edible","poisonous"]
     X_train, X_test, y_train, y_test = split(df)
     st.sidebar.subheader("Choose your classifier")
-    classifier = st.sidebar.selectbox("Which ML classifier do u want the dataset to be trained on?",("Logistic Regression","Support Vector Classifier(SVC)"))
+    classifier = st.sidebar.selectbox("Which ML classifier do u want the dataset to be trained on?",("Logistic Regression","Support Vector Classifier(SVC)","Decision Tree Classifier"))
 
     if classifier == "Logistic Regression":
         st.sidebar.write("Choose Hyperparameters for your model")
@@ -64,6 +65,19 @@ def main():
             st.write("Precision: ", precision_score(y_test,y_predicted,classes))
             st.write("Recall: ", recall_score(y_test,y_predicted,classes))
 
-
+    if classifier == "Decision Tree Classifier":
+        st.sidebar.write("Choose Hyperparameters for your model")
+        criterion = st.sidebar.selectbox("criterion",("gini","entropy"))
+        max_depth = st.sidebar.number_input("max_depth of the tree",1,500,10,10)
+        if st.sidebar.button("Classify"):
+            st.subheader("Decision Tree Classifier Results")
+            model = DecisionTreeClassifier(criterion=criterion,max_depth=max_depth)
+            model.fit(X_train,y_train)
+            accuracy = model.score(X_test,y_test)
+            y_predicted = model.predict(X_test)
+            st.write("Accuracy: ", accuracy.round(2))
+            st.write("Precision: ", precision_score(y_test,y_predicted,classes))
+            st.write("Recall: ", recall_score(y_test,y_predicted,classes))
+    
 if __name__ == "__main__":
     main()
