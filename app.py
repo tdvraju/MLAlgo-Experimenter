@@ -127,7 +127,7 @@ if __name__ == "__main__":
     if st.checkbox("Show dataset", False):
         st.subheader("Mushroom Dataset")
         st.dataframe(df)
-        st.markdown("This [data set](https://archive.ics.uci.edu/ml/datasets/Mushroom) includes      descriptions of hypothetical samples corresponding to 23 species of gilled mushrooms "
+        st.markdown("This [data set](https://archive.ics.uci.edu/ml/datasets/Mushroom) includes "  "descriptions of hypothetical samples corresponding to 23 species of gilled mushrooms "
         "in the Agaricus and Lepiota Family (pp. 500-525). Each species is identified as definitely edible, definitely poisonous, "
         "or of unknown edibility and not recommended. This latter class was combined with the poisonous one.")
 
